@@ -135,9 +135,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         // Initialize label and create a label which holds the score
         score = 0
-        scoreLabelNode = SKLabelNode(fontNamed:"AvenirNext-Bold")
-        scoreLabelNode.fontSize = 35
-        scoreLabelNode.position = CGPoint( x: self.frame.midX, y: self.frame.size.height - 80)
+        scoreLabelNode = SKLabelNode(fontNamed:"MarkerFelt-Wide")
+        scoreLabelNode.fontSize = 45
+        scoreLabelNode.position = CGPoint( x: self.frame.midX, y: self.frame.size.height - 90)
         scoreLabelNode.zPosition = 100
         scoreLabelNode.text = String(score)
         self.addChild(scoreLabelNode)
