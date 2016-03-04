@@ -33,6 +33,8 @@ class GameViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        ////
 
         if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
             // Configure the view.
@@ -49,6 +51,19 @@ class GameViewController: UIViewController {
             skView.presentScene(scene)
         }
     }
+    
+    func showAllFonts() {
+        
+        for family: String in UIFont.familyNames()
+        {
+            print("\(family)")
+            for names: String in UIFont.fontNamesForFamilyName(family)
+            {
+                print("== \(names)")
+            }
+        }
+        
+    }
 
     override func shouldAutorotate() -> Bool {
         return true
@@ -59,12 +74,6 @@ class GameViewController: UIViewController {
     }
 
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-//        if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
-//            return UIInterfaceOrientationMask.AllButUpsideDown
-//        } else {
-//            return UIInterfaceOrientationMask.All
-//        }
-        
         return UIInterfaceOrientationMask.Portrait
     }
 

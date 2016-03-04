@@ -19,7 +19,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var moving:SKNode!
     var pipes:SKNode!
     var canRestart = Bool()
-    var scoreLabelNode:SKLabelNode!
+    var scoreLabelNode:MKOutlinedLabelNode!
     var score = NSInteger()
     
     let birdCategory: UInt32 = 1 << 0
@@ -111,7 +111,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         bird = SKSpriteNode(texture: birdTexture1)
         bird.setScale(2.0)
-        bird.position = CGPoint(x: self.frame.size.width * 0.35, y:self.frame.size.height * 0.6)
+        bird.position = CGPoint(x: self.frame.size.width * 0.35, y:self.frame.size.height * 0.7)
         bird.runAction(flap)
         
         
@@ -135,11 +135,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         // Initialize label and create a label which holds the score
         score = 0
-        scoreLabelNode = SKLabelNode(fontNamed:"MarkerFelt-Wide")
-        scoreLabelNode.fontSize = 45
-        scoreLabelNode.position = CGPoint( x: self.frame.midX, y: self.frame.size.height - 90)
+        
+        scoreLabelNode = MKOutlinedLabelNode(fontNamed: "Joystix", fontSize: 45)
+        scoreLabelNode.borderColor = UIColor.blackColor()
+        scoreLabelNode.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
+        scoreLabelNode.fontColor = UIColor.whiteColor()
         scoreLabelNode.zPosition = 100
-        scoreLabelNode.text = String(score)
+        scoreLabelNode.position = CGPoint( x: self.frame.midX, y: self.frame.size.height - 90)
+        scoreLabelNode.outlinedText = String(score)
+        
         self.addChild(scoreLabelNode)
         
     }
@@ -187,7 +191,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     func resetScene (){
         // Move bird to original position and reset velocity
-        bird.position = CGPoint(x: self.frame.size.width / 2.5, y: self.frame.midY)
+        bird.position = CGPoint(x: self.frame.size.width / 2.5, y: self.frame.midY+100)
         bird.physicsBody?.velocity = CGVector( dx: 0, dy: 0 )
         bird.physicsBody?.collisionBitMask = worldCategory | pipeCategory
         bird.speed = 1.0
@@ -201,7 +205,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         // Reset score
         score = 0
-        scoreLabelNode.text = String(score)
+        scoreLabelNode.outlinedText = String(score)
         
         // Restart animation
         moving.speed = 5
@@ -243,10 +247,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             if ( contact.bodyA.categoryBitMask & scoreCategory ) == scoreCategory || ( contact.bodyB.categoryBitMask & scoreCategory ) == scoreCategory {
                 // Bird has contact with score entity
                 score++
-                scoreLabelNode.text = String(score)
+                scoreLabelNode.outlinedText = String(score)
                 
                 // Add a little visual feedback for the score increment
                 scoreLabelNode.runAction(SKAction.sequence([SKAction.scaleTo(1.5, duration:NSTimeInterval(0.1)), SKAction.scaleTo(1.0, duration:NSTimeInterval(0.1))]))
+                
             } else {
                 
                 moving.speed = 0

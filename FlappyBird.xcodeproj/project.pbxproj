@@ -15,6 +15,8 @@
 		4374520B193D163800654986 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4374520A193D163800654986 /* Images.xcassets */; };
 		43745217193D163800654986 /* FlappyBirdTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43745216193D163800654986 /* FlappyBirdTests.swift */; };
 		437A3DBA193D326A00909BA0 /* bird.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 437A3DB9193D326A00909BA0 /* bird.atlas */; };
+		BE7630431C89ACF600539539 /* MKOutlinedLabelNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7630421C89ACF600539539 /* MKOutlinedLabelNode.swift */; };
+		BE7630451C89C1A300539539 /* JOYSTIX.TTF in Resources */ = {isa = PBXBuildFile; fileRef = BE7630441C89C19900539539 /* JOYSTIX.TTF */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +42,8 @@
 		43745215193D163800654986 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43745216193D163800654986 /* FlappyBirdTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlappyBirdTests.swift; sourceTree = "<group>"; };
 		437A3DB9193D326A00909BA0 /* bird.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = bird.atlas; sourceTree = "<group>"; };
+		BE7630421C89ACF600539539 /* MKOutlinedLabelNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKOutlinedLabelNode.swift; sourceTree = "<group>"; };
+		BE7630441C89C19900539539 /* JOYSTIX.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = JOYSTIX.TTF; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +90,7 @@
 				43745201193D163700654986 /* GameScene.sks */,
 				43745203193D163800654986 /* GameScene.swift */,
 				43745205193D163800654986 /* GameViewController.swift */,
+				BE7630421C89ACF600539539 /* MKOutlinedLabelNode.swift */,
 				43745207193D163800654986 /* Main.storyboard */,
 				4374520A193D163800654986 /* Images.xcassets */,
 				437A3DB9193D326A00909BA0 /* bird.atlas */,
@@ -97,6 +102,7 @@
 		437451FD193D163700654986 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				BE7630441C89C19900539539 /* JOYSTIX.TTF */,
 				437451FE193D163700654986 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -165,7 +171,7 @@
 			attributes = {
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = Fullstack.io;
 				TargetAttributes = {
 					437451F9193D163700654986 = {
@@ -204,6 +210,7 @@
 				4374520B193D163800654986 /* Images.xcassets in Resources */,
 				43745202193D163700654986 /* GameScene.sks in Resources */,
 				437A3DBA193D326A00909BA0 /* bird.atlas in Resources */,
+				BE7630451C89C1A300539539 /* JOYSTIX.TTF in Resources */,
 				43745209193D163800654986 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -224,6 +231,7 @@
 			files = (
 				43745204193D163800654986 /* GameScene.swift in Sources */,
 				43745206193D163800654986 /* GameViewController.swift in Sources */,
+				BE7630431C89ACF600539539 /* MKOutlinedLabelNode.swift in Sources */,
 				43745200193D163700654986 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -278,6 +286,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -341,10 +350,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = FlappyBird/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.fullstack.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -352,10 +362,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = FlappyBird/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.fullstack.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -374,6 +385,7 @@
 				INFOPLIST_FILE = FlappyBirdTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				METAL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "io.fullstack.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
@@ -390,6 +402,7 @@
 				INFOPLIST_FILE = FlappyBirdTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				METAL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "io.fullstack.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
