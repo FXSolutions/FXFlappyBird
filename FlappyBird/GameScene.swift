@@ -9,10 +9,11 @@
 import SpriteKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate{
-    let verticalPipeGap = 150.0
+    let verticalPipeGap = 130.0
     
     var bird:SKSpriteNode!
     var skyColor:SKColor!
+    var scoreBoardImage:SKSpriteNode!
     var pipeTextureUp:SKTexture!
     var pipeTextureDown:SKTexture!
     var movePipesAndRemove:SKAction!
@@ -32,11 +33,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         canRestart = false
         
         // setup physics
-        self.physicsWorld.gravity = CGVector( dx: 0.0, dy: -15.0 )
+        self.physicsWorld.gravity = CGVector( dx: 0.0, dy: -17.0 )
         self.physicsWorld.contactDelegate = self
         
         // setup background color
-        skyColor = SKColor(red: 81.0/255.0, green: 192.0/255.0, blue: 201.0/255.0, alpha: 1.0)
+        // SKColor(red: 81.0/255.0, green: 192.0/255.0, blue: 201.0/255.0, alpha: 1.0) // blue sky
+        //245, 171, 53 //244, 179, 80
+        skyColor = SKColor(red: 244.0/255.0, green: 179.0/255.0, blue: 80.0/255.0, alpha: 1.0)
         self.backgroundColor = skyColor
         
         moving = SKNode()
@@ -48,7 +51,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let groundTexture = SKTexture(imageNamed: "land")
         groundTexture.filteringMode = .Nearest // shorter form for SKTextureFilteringMode.Nearest
         
-        let moveGroundSprite = SKAction.moveByX(-groundTexture.size().width * 2.0, y: 0, duration: NSTimeInterval(0.02 * groundTexture.size().width * 2.0))
+        let moveGroundSprite = SKAction.moveByX(-groundTexture.size().width * 2.0, y: 0, duration: NSTimeInterval(0.015 * groundTexture.size().width * 2.0))
         let resetGroundSprite = SKAction.moveByX(groundTexture.size().width * 2.0, y: 0, duration: 0.0)
         let moveGroundSpritesForever = SKAction.repeatActionForever(SKAction.sequence([moveGroundSprite,resetGroundSprite]))
         
@@ -95,16 +98,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         // spawn the pipes
         let spawn = SKAction.runBlock({() in self.spawnPipes()})
-        let delay = SKAction.waitForDuration(NSTimeInterval(1.0))
+        let delay = SKAction.waitForDuration(NSTimeInterval(0.9))
         let spawnThenDelay = SKAction.sequence([spawn, delay])
         let spawnThenDelayForever = SKAction.repeatActionForever(spawnThenDelay)
         self.runAction(spawnThenDelayForever)
         
         // setup our bird
-        let birdTexture1 = SKTexture(imageNamed: "bird-01")
+        let birdTexture1 = SKTexture(imageNamed: "bird-01blue")
         birdTexture1.filteringMode = .Nearest
-        let birdTexture2 = SKTexture(imageNamed: "bird-02")
+        let birdTexture2 = SKTexture(imageNamed: "bird-02blue")
         birdTexture2.filteringMode = .Nearest
+//        let birdTexture3 = SKTexture(imageNamed: "bird-03")
+//        birdTexture3.filteringMode = .Nearest
+//        let birdTexture4 = SKTexture(imageNamed: "bird-04")
+//        birdTexture4.filteringMode = .Nearest
         
         let anim = SKAction.animateWithTextures([birdTexture1, birdTexture2], timePerFrame: 0.2)
         let flap = SKAction.repeatActionForever(anim)
@@ -113,7 +120,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         bird.setScale(2.0)
         bird.position = CGPoint(x: self.frame.size.width * 0.35, y:self.frame.size.height * 0.7)
         bird.runAction(flap)
-        
         
         bird.physicsBody = SKPhysicsBody(circleOfRadius: bird.size.height / 2.0)
         bird.physicsBody?.dynamic = true
@@ -191,6 +197,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     func resetScene (){
         // Move bird to original position and reset velocity
+        bird.removeFromParent()
+        scoreBoardImage.removeFromParent()
+        scoreBoardImage = nil
+        
+        self.scoreLabelNode.hidden = false
+        
         bird.position = CGPoint(x: self.frame.size.width / 2.5, y: self.frame.midY+100)
         bird.physicsBody?.velocity = CGVector( dx: 0, dy: 0 )
         bird.physicsBody?.collisionBitMask = worldCategory | pipeCategory
@@ -208,7 +220,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         scoreLabelNode.outlinedText = String(score)
         
         // Restart animation
-        moving.speed = 5
+        moving.speed = 4
+        
+        // setup our bird
+        let birdTexture1 = SKTexture(imageNamed: "bird-01blue")
+        birdTexture1.filteringMode = .Nearest
+        let birdTexture2 = SKTexture(imageNamed: "bird-02blue")
+        birdTexture2.filteringMode = .Nearest
+        
+        let anim = SKAction.animateWithTextures([birdTexture1, birdTexture2], timePerFrame: 0.2)
+        let flap = SKAction.repeatActionForever(anim)
+        
+        bird = SKSpriteNode(texture: birdTexture1)
+        bird.setScale(2.0)
+        bird.position = CGPoint(x: self.frame.size.width * 0.35, y:self.frame.size.height * 0.7)
+        bird.runAction(flap)
+        
+        bird.physicsBody = SKPhysicsBody(circleOfRadius: bird.size.height / 2.0)
+        bird.physicsBody?.dynamic = true
+        bird.physicsBody?.allowsRotation = false
+        
+        bird.physicsBody?.categoryBitMask = birdCategory
+        bird.physicsBody?.collisionBitMask = worldCategory | pipeCategory
+        bird.physicsBody?.contactTestBitMask = worldCategory | pipeCategory
+        
+        self.addChild(bird)
+        
     }
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         /* Called when a touch begins */
@@ -270,6 +307,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                             self.canRestart = true
                             })]), withKey: "flash")
             }
+        } else {
+            print("bird is droped")
+            
+            if (self.scoreBoardImage == nil) {
+                self.showScoreBoard()
+            }
+            
         }
+        
     }
+    
+    func showScoreBoard() {
+        
+        self.scoreLabelNode.hidden = true
+        
+        self.scoreBoardImage = SKSpriteNode(imageNamed: "scoreboard")
+        self.scoreBoardImage.position = CGPoint(x: self.frame.size.width/2, y:self.frame.size.height/2)
+        self.scoreBoardImage.setScale(1.5)
+        
+        self.addChild(self.scoreBoardImage)
+        
+    }
+    
 }
